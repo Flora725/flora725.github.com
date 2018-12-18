@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title></title>
+      <link href="/2018/12/18/canvas-puzzle/"/>
+      <url>/2018/12/18/canvas-puzzle/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Canvas"><a href="#Canvas" class="headerlink" title="Canvas"></a>Canvas</h1><h2 id="fillRect-和-rect-有什么不同？"><a href="#fillRect-和-rect-有什么不同？" class="headerlink" title="fillRect() 和 rect() 有什么不同？"></a>fillRect() 和 rect() 有什么不同？</h2><p>先来看一段代码，猜一猜这两个正方形分别是什么颜色？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ctx.fillStyle = &quot;red&quot;;</span><br><span class="line">ctx.rect(50, 50, 50, 50);</span><br><span class="line">ctx.fill();</span><br><span class="line">ctx.fillStyle = &quot;blue&quot;;</span><br><span class="line">ctx.rect(120, 50, 50, 50);</span><br><span class="line">ctx.fill();</span><br></pre></td></tr></table></figure></p><p>出现两个蓝色正方形对吗？如果我把第 2 行和第 3 行合并成 <code>ctx.fillRect(50, 50, 50, 50)</code> 或者把第 5 行和第 6 行合并成 <code>ctx.fillRect(120,50, 50, 50)</code> 就会出现一个红色和一个蓝色正方形。<br>为什么会出现这种情况？难道<code>fillRect()</code> 不是 <code>rect()</code> 和 <code>fill()</code> 的叠加吗？</p><ul><li><p><code>.fillRect()</code> 是一个<strong>独立</strong>的命令，它可以勾勒并填充出一个矩形。<br>如果你把多个<code>.fillStyle()</code> 和多个<code>.fillRect()</code> 搭配使用，每个矩形都会是离它最近的那个<code>.fillStyle()</code> 规定的颜色。比如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">illegibility=&quot;red&quot;;</span><br><span class="line">ctx.fillRect(10,10,10,10);  // filled with red</span><br><span class="line"></span><br><span class="line">ctx.fillStyle=&quot;green&quot;;</span><br><span class="line">ctx.fillRect(20,20,10,10);  // filled with green</span><br><span class="line"></span><br><span class="line">ctx.fillStyle=&quot;blue&quot;;</span><br><span class="line">ctx.fillRect(30,30,10,10);  // filled with blue</span><br></pre></td></tr></table></figure></li><li><p><code>.rect()</code> 是 canvas 路径命令中的一个语句。<br><strong>路径命令</strong>是你绘制的多个形状的<strong>集合</strong>，它从一个<code>beginPath()</code> 开始，直到遇到另一个<code>beginPath()</code> 结束，都只算一个路径命令。<br>在每一个集合内，只有最后一个<code>fillStyle</code> / <code>strokeStyle</code> 才起作用。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ctx.beginPath();       // 开启一个路径命令</span><br><span class="line">ctx.fillStyle=&quot;red&quot;;</span><br><span class="line">ctx.rect(10,10,10,10);</span><br><span class="line">ctx.fillStyle=&quot;green&quot;;</span><br><span class="line">ctx.rect(20,20,10,10);</span><br><span class="line">ctx.fillStyle=&quot;blue&quot;;  // 这是最后一个 fillStyle，所以它赢了</span><br><span class="line">ctx.rect(30,30,10,10); </span><br><span class="line">ctx.fill()</span><br></pre></td></tr></table></figure></li></ul><p>总结：你可以认为<code>.fillRect()</code> 内部包含了一个<code>beginPath()</code>，所以可以<strong>自动</strong>开启一个新的路径命令。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+  
+  
+</search>
